@@ -1,0 +1,33 @@
+PODS:
+  - DifferenceKit/Core (0.7.2)
+  - DifferenceKit/UIKitExtension (0.7.2):
+    - DifferenceKit/Core
+  - Keys (1.0.1)
+  - Nuke (7.4.2)
+  - SnapKit (4.0.1)
+
+DEPENDENCIES:
+  - DifferenceKit/UIKitExtension
+  - Keys (from `Pods/CocoaPodsKeys`)
+  - Nuke (~> 7.0)
+  - SnapKit (~> 4.0.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - DifferenceKit
+    - Nuke
+    - SnapKit
+
+EXTERNAL SOURCES:
+  Keys:
+    :path: Pods/CocoaPodsKeys
+
+SPEC CHECKSUMS:
+  DifferenceKit: 5179eaf0e76a1b9fbaeb93f4c1a82510be63ca65
+  Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
+  Nuke: aee5c42001369902798f7b844611b8ae930ce333
+  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+
+PODFILE CHECKSUM: 9e1d5d78e82c9f0bbbfba73295dd347318fdfacb
+
+COCOAPODS: 1.5.3

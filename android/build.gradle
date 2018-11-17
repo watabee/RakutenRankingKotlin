@@ -1,0 +1,85 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-multiplatform'
+apply plugin: 'kotlinx-serialization'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    defaultConfig {
+        applicationId "com.github.watabee.rakutenranking"
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+        versionCode buildConfig.version.code
+        versionName buildConfig.version.name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "RAKUTEN_APP_ID", "\"${rootProject.property('RAKUTEN_APP_ID')}\""
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+
+            def files = project.file("proguards")
+                .listFiles()
+                .findAll { it.name.startsWith('proguard') }
+                .toList()
+                .toArray()
+            files.plus(getDefaultProguardFile('proguard-android-optimize.txt'))
+
+            proguardFiles(files)
+        }
+    }
+}
+
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation project(':common')
+            }
+        }
+    }
+
+    targets {
+        fromPreset(presets.android, 'androidApp')
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation deps.kotlin.stdlib.jdk
+    implementation deps.kotlin.coroutines.jdk
+    implementation deps.kotlin.coroutines.android
+
+    implementation deps.androidx.appCompat
+    implementation deps.androidx.recyclerView
+    implementation deps.androidx.ktx
+    implementation deps.androidx.constraintLayout
+    implementation deps.androidx.browser
+
+    implementation deps.knarch.dbAndroid
+    implementation deps.sqldelight.runtimeJdk
+    implementation deps.sqldelight.multiplatformdriverAndroid
+
+    implementation deps.groupie.core
+    implementation deps.groupie.dataBinding
+
+    implementation deps.glide.core
+    kapt deps.glide.compiler
+
+    implementation deps.koin.core
+    implementation deps.koin.android
+    implementation(deps.koin.viewModel) {
+        exclude group: 'androidx.lifecycle'
+    }
+
+    implementation deps.ktor.client.okhttp
+    implementation deps.timber.android
+}

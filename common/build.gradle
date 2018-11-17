@@ -1,0 +1,122 @@
+apply plugin: 'kotlin-multiplatform'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlinx-serialization'
+apply plugin: 'com.squareup.sqldelight'
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+    }
+    
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation deps.androidx.appCompat
+    implementation deps.androidx.lifecycleExtension
+    implementation deps.okhttp.logging
+}
+
+kotlin {
+    targets {
+        fromPreset(presets.android, 'android')
+
+        final def iOSTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos") \
+                              ? presets.iosArm64 : presets.iosX64
+
+        fromPreset(iOSTarget, 'ios') {
+            compilations.main.outputKinds('FRAMEWORK')
+            compilations.each {
+                it.extraOpts("-linker-options", "-lsqlite3")
+            }
+        }
+    }
+
+    sourceSets {
+        commonMain {
+            kotlin {
+                srcDirs 'build/sqldelight'
+            }
+            dependencies {
+                implementation deps.kotlin.stdlib.common
+                implementation deps.kotlin.coroutines.common
+                implementation deps.kotlin.serialization.common
+                implementation deps.ktor.client.core.common
+                implementation deps.ktor.client.json.core
+                implementation deps.knarch.db
+                implementation deps.sqldelight.runtime
+                implementation deps.sqldelight.multiplatformdriver
+                implementation deps.timber.common
+            }
+        }
+
+        androidMain {
+            dependencies {
+                implementation deps.kotlin.stdlib.jdk
+                implementation deps.kotlin.coroutines.jdk
+                implementation deps.kotlin.coroutines.android
+                implementation deps.kotlin.serialization.jdk
+                implementation deps.ktor.client.okhttp
+                implementation deps.ktor.client.json.jvm
+                implementation deps.knarch.dbAndroid
+                implementation deps.sqldelight.runtimeJdk
+                implementation deps.sqldelight.multiplatformdriverAndroid
+                implementation deps.timber.android
+            }
+        }
+
+        iosMain {
+            dependencies {
+                implementation deps.kotlin.coroutines.native
+                implementation deps.kotlin.serialization.native
+                implementation deps.ktor.client.core.ios
+                implementation deps.ktor.client.ios
+                implementation deps.ktor.client.json.ios
+                implementation deps.knarch.dbNative
+                implementation deps.sqldelight.runtimeNative
+                implementation deps.sqldelight.multiplatformdriverNative
+                implementation deps.timber.ios
+            }
+        }
+    }
+}
+
+// workaround for https://youtrack.jetbrains.com/issue/KT-27170
+configurations {
+    compileClasspath
+}
+
+sqldelight {
+    packageName = "com.github.watabee.rakutenranking.db"
+}
+
+tasks.preBuild.dependsOn("generateSqlDelightInterface")
+
+task setupIos(type: Exec) {
+    workingDir "${rootDir}/ios"
+    commandLine "sh", "./scripts/setup.sh", rootProject.property("RAKUTEN_APP_ID")
+}
+
+task packForXCode(type: Sync) {
+    final File frameworkDir = new File(buildDir, "xcode-frameworks")
+    final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
+
+    inputs.property "mode", mode
+    dependsOn kotlin.targets.ios.compilations.main.linkTaskName("FRAMEWORK", mode)
+
+    from { kotlin.targets.ios.compilations.main.getBinary("FRAMEWORK", mode).parentFile }
+    into frameworkDir
+
+    doLast {
+        new File(frameworkDir, 'gradlew').with {
+            text = "#!/bin/bash\nexport 'JAVA_HOME=${System.getProperty("java.home")}'\ncd '${rootProject.rootDir}'\n./gradlew \$@\n"
+            setExecutable(true)
+        }
+    }
+}
+
+tasks.build.dependsOn packForXCode

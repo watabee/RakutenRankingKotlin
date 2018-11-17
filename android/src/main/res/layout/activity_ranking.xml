@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:colorSchemeColor="@{@color/colorAccent}"
+        tools:context=".presentation.ranking.RankingActivity">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="outsideOverlay"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:hasFixedSize="@{true}"
+            tools:listitem="@layout/list_item_ranking"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</layout>

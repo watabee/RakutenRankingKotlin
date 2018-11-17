@@ -1,0 +1,23 @@
+CREATE TABLE browsingHistory(
+    itemCode TEXT NOT NULL PRIMARY KEY,
+    itemName TEXT NOT NULL,
+    itemPrice TEXT NOT NULL,
+    itemUrl TEXT NOT NULL,
+    imageUrl TEXT,
+    shopName TEXT NOT NULL,
+    watchedAt INTEGER NOT NULL
+
+);
+
+selectAll:
+SELECT * FROM browsingHistory ORDER BY watchedAt DESC;
+
+selectCount:
+SELECT COUNT(*) FROM browsingHistory;
+
+insertOrUpdate:
+INSERT OR REPLACE INTO browsingHistory(itemCode, itemName, itemPrice, itemUrl, imageUrl, shopName, watchedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+deleteOldestBrowsingHistory:
+DELETE FROM browsingHistory WHERE watchedAt = (SELECT MIN(watchedAt) FROM browsingHistory);
