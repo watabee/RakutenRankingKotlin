@@ -13,7 +13,7 @@ class RakutenRankingApp : Application() {
         super.onCreate()
 
         startKoin(
-            context = this,
+            androidContext = this,
             modules = listOf(appModule),
             logger = if (BuildConfig.DEBUG) AndroidLogger() else EmptyLogger()
         )

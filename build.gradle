@@ -25,7 +25,7 @@ buildscript {
         'sqldelight': '1.0.0-k1.3.0-a2',
         'knarchDb': '0.7.2-k1.3.0-a1',
         'timber': '5.0.0-k1.3.0-a1',
-        'koin': '1.0.1',
+        'koin': '1.0.2',
         'androidx': [
             'lifecycle': '2.0.0'
         ],
