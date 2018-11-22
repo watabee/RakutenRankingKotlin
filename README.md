@@ -1,6 +1,6 @@
 # RakutenRanking
 
-This project is a sample project for kotlin native, shows information of the top selling items on Rakuten Ichiba using [Rakuten Ichiba Ranking API](https://webservice.rakuten.co.jp/api/ichibaitemranking/) (<a href="https://webservice.rakuten.co.jp/" target="_blank">Supported by Rakuten Developers</a>).
+This is a sample project for kotlin native, shows information of the top selling items on Rakuten Ichiba using [Rakuten Ichiba Ranking API](https://webservice.rakuten.co.jp/api/ichibaitemranking/) (<a href="https://webservice.rakuten.co.jp/" target="_blank">Supported by Rakuten Developers</a>).
 
 ## Setup
 
