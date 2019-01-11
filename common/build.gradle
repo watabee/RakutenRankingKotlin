@@ -98,7 +98,7 @@ tasks.preBuild.dependsOn("generateSqlDelightInterface")
 
 task setupIos(type: Exec) {
     workingDir "${rootDir}/ios"
-    commandLine "sh", "./scripts/setup.sh", rootProject.property("RAKUTEN_APP_ID")
+    commandLine "sh", "./scripts/setup.sh", propOrEnv("RAKUTEN_APP_ID")
 }
 
 task packForXCode(type: Sync) {

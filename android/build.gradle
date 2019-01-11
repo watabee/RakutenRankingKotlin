@@ -14,7 +14,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField "String", "RAKUTEN_APP_ID", "\"${rootProject.property('RAKUTEN_APP_ID')}\""
+        buildConfigField "String", "RAKUTEN_APP_ID", "\"${propOrEnv('RAKUTEN_APP_ID')}\""
     }
 
     dataBinding {
