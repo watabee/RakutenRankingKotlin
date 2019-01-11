@@ -35,6 +35,18 @@ android {
             proguardFiles(files)
         }
     }
+
+    packagingOptions {
+        // https://ktor.io/quickstart/migration/1.1.1.html
+        // Known issues: There are duplicate META-INF files in common and jvm modules.
+        exclude 'META-INF/ktor-http.kotlin_module'
+        exclude 'META-INF/kotlinx-io.kotlin_module'
+        exclude 'META-INF/atomicfu.kotlin_module'
+        exclude 'META-INF/ktor-utils.kotlin_module'
+        exclude 'META-INF/kotlinx-coroutines-io.kotlin_module'
+        exclude 'META-INF/ktor-client-json.kotlin_module'
+        exclude 'META-INF/ktor-client-core.kotlin_module'
+    }
 }
 
 kotlin {

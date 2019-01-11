@@ -45,7 +45,7 @@ kotlin {
                 implementation deps.kotlin.stdlib.common
                 implementation deps.kotlin.coroutines.common
                 implementation deps.kotlin.serialization.common
-                implementation deps.ktor.client.core.common
+                implementation deps.ktor.client.core
                 implementation deps.ktor.client.json.core
                 implementation deps.knarch.db
                 implementation deps.sqldelight.runtime
@@ -73,7 +73,6 @@ kotlin {
             dependencies {
                 implementation deps.kotlin.coroutines.native
                 implementation deps.kotlin.serialization.native
-                implementation deps.ktor.client.core.ios
                 implementation deps.ktor.client.ios
                 implementation deps.ktor.client.json.ios
                 implementation deps.knarch.dbNative
