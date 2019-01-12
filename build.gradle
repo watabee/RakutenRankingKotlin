@@ -29,6 +29,7 @@ buildscript {
         'androidx': [
             'lifecycle': '2.0.0'
         ],
+        'okhttp': '3.12.1',
         'groupie': '2.3.0',
         'glide': '4.8.0',
         'ktlint': '0.29.0',
@@ -96,7 +97,7 @@ buildscript {
             'viewModel': "org.koin:koin-androidx-viewmodel:${versions.koin}",
         ],
         'okhttp': [
-            'logging': "com.squareup.okhttp3:logging-interceptor:3.11.0"
+            'logging': "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
         ],
         'groupie': [
             'core': "com.xwray:groupie:${versions.groupie}",
@@ -135,6 +136,16 @@ allprojects {
         maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
         maven { url 'https://dl.bintray.com/touchlabpublic/kotlin' }
         maven { url "https://dl.bintray.com/kotlin/ktor" }
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            eachDependency { details ->
+                if (details.requested.group == 'com.squareup.okhttp3') {
+                    details.useVersion versions.okhttp
+                }
+            }
+        }
     }
 }
 
