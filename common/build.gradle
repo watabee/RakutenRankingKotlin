@@ -101,7 +101,7 @@ task setupIos(type: Exec) {
     commandLine "sh", "./scripts/setup.sh", propOrEnv("RAKUTEN_APP_ID")
 }
 
-task packForXCode(type: Sync) {
+task packForXCode(type: Sync, dependsOn: "generateSqlDelightInterface") {
     final File frameworkDir = new File(buildDir, "xcode-frameworks")
     final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
 
@@ -110,13 +110,6 @@ task packForXCode(type: Sync) {
 
     from { kotlin.targets.ios.compilations.main.getBinary("FRAMEWORK", mode).parentFile }
     into frameworkDir
-
-    doLast {
-        new File(frameworkDir, 'gradlew').with {
-            text = "#!/bin/bash\nexport 'JAVA_HOME=${System.getProperty("java.home")}'\ncd '${rootProject.rootDir}'\n./gradlew \$@\n"
-            setExecutable(true)
-        }
-    }
 }
 
 tasks.build.dependsOn packForXCode
