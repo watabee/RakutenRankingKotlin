@@ -254,7 +254,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $SRCROOT/../\n./gradlew :common:packForXCode -PXCODE_CONFIGURATION=${CONFIGURATION}\n";
+			shellScript = "cd $SRCROOT/../\n# TODO: remove x86_64 architecture if publish app to the App Store\n./gradlew :common:createIosDebugFatFramework\n";
 		};
 		6D2A4D0B68E041842DFD6E51 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

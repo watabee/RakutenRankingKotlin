@@ -22,20 +22,6 @@ dependencies {
 }
 
 kotlin {
-    targets {
-        fromPreset(presets.android, 'android')
-
-        final def iOSTarget = System.getenv('SDK_NAME')?.startsWith("iphoneos") \
-                              ? presets.iosArm64 : presets.iosX64
-
-        fromPreset(iOSTarget, 'ios') {
-            compilations.main.outputKinds('FRAMEWORK')
-            compilations.each {
-                it.extraOpts("-linker-options", "-lsqlite3")
-            }
-        }
-    }
-
     sourceSets {
         commonMain {
             kotlin {
@@ -82,6 +68,25 @@ kotlin {
             }
         }
     }
+
+    targets {
+        fromPreset(presets.android, 'android')
+
+        fromPreset(presets.iosArm64, 'iosArm64')
+        fromPreset(presets.iosX64, 'iosX64')
+
+        configure([iosArm64, iosX64]) {
+            compilations.main {
+                source(sourceSets.iosMain)
+                outputKinds('FRAMEWORK')
+                extraOpts "-Xuse-experimental=kotlin.Experimental",
+                    "-Xuse-experimental=kotlin.ExperimentalMultiplatform"
+            }
+            compilations.each {
+                it.extraOpts("-linker-options", "-lsqlite3")
+            }
+        }
+    }
 }
 
 // workaround for https://youtrack.jetbrains.com/issue/KT-27170
@@ -100,15 +105,61 @@ task setupIos(type: Exec) {
     commandLine "sh", "./scripts/setup.sh", propOrEnv("RAKUTEN_APP_ID")
 }
 
-task packForXCode(type: Sync, dependsOn: "generateSqlDelightInterface") {
-    final File frameworkDir = new File(buildDir, "xcode-frameworks")
-    final String mode = project.findProperty("XCODE_CONFIGURATION")?.toUpperCase() ?: 'DEBUG'
+// createIosDebugFatFramework or createIosReleaseFatFramework
+project.afterEvaluate {
+    final String frameworkName = "${project.name}.framework"
+    final String binaryName = project.name
 
-    inputs.property "mode", mode
-    dependsOn kotlin.targets.ios.compilations.main.linkTaskName("FRAMEWORK", mode)
+    ["Debug", "Release"].each { buildType ->
 
-    from { kotlin.targets.ios.compilations.main.getBinary("FRAMEWORK", mode).parentFile }
-    into frameworkDir
+        final String outputDir = "${buildDir}/xcode-frameworks"
+        final String frameworkOutputPath = "${outputDir}/${frameworkName}"
+        final String binaryOutputPath = "${frameworkOutputPath}/${binaryName}"
+
+        project.tasks.create("createIos${buildType}FatFramework") { task ->
+            final String linkTaskArm64 = kotlin.targets.iosArm64.compilations.main.linkTaskName("FRAMEWORK", buildType)
+            final String linkTaskX64 = kotlin.targets.iosX64.compilations.main.linkTaskName("FRAMEWORK", buildType)
+
+            task.dependsOn generateSqlDelightInterface
+            task.dependsOn linkTaskArm64
+            task.dependsOn linkTaskX64
+
+            task.doLast {
+                final String outputArm64 = project.tasks.getByName(linkTaskArm64).outputFile.get().parentFile.absolutePath
+                final String outputX64 = project.tasks.getByName(linkTaskX64).outputFile.get().parentFile.absolutePath
+
+                exec { exec ->
+                    new File(frameworkOutputPath).mkdirs()
+
+                    def args = ["-create"]
+
+                    args.addAll(["-arch", "arm64", "${outputArm64}/${frameworkName}/${binaryName}"])
+                    args.addAll(["-arch", "x86_64", "${outputX64}/${frameworkName}/${binaryName}"])
+                    args.addAll(["-output", "${binaryOutputPath}"])
+
+                    exec.executable = "lipo"
+                    exec.args = args
+                }
+
+                final String frameworkPathArm64 = "${outputArm64}/${frameworkName}"
+                copy { copy ->
+                    copy.from(frameworkPathArm64) { from ->
+                        from.exclude(binaryName)
+                    }
+                    copy.into(frameworkOutputPath)
+                }
+
+                final String plistPath = "${frameworkOutputPath}/Info.plist"
+                exec { exec ->
+                    exec.executable = "/usr/libexec/PlistBuddy"
+                    exec.args = ["-c", "Delete :UIRequiredDeviceCapabilities", plistPath]
+                }
+
+                exec { exec ->
+                    exec.executable = "/usr/libexec/PlistBuddy"
+                    exec.args = ["-c", "Add :CFBundleSupportedPlatforms:1 string iPhoneSimulator", plistPath]
+                }
+            }
+        }
+    }
 }
-
-tasks.build.dependsOn packForXCode
