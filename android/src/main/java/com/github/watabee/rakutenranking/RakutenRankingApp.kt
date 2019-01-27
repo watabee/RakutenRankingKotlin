@@ -4,7 +4,6 @@ import android.app.Application
 import org.koin.android.ext.android.startKoin
 import org.koin.android.logger.AndroidLogger
 import org.koin.log.EmptyLogger
-import timber.log.LogcatTree
 import timber.log.Timber
 
 class RakutenRankingApp : Application() {
@@ -19,7 +18,7 @@ class RakutenRankingApp : Application() {
         )
 
         if (BuildConfig.DEBUG) {
-            Timber.plant(LogcatTree())
+            Timber.plant(Timber.DebugTree())
         }
     }
 }

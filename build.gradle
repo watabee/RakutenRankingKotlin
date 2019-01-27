@@ -24,7 +24,7 @@ buildscript {
         'ktor': '1.1.1',
         'sqldelight': '1.0.0-k1.3.0-a2',
         'knarchDb': '0.7.2-k1.3.0-a1',
-        'timber': '5.0.0-k1.3.0-a1',
+        'timber': '4.7.1',
         'koin': '1.0.2',
         'androidx': [
             'lifecycle': '2.0.0'
@@ -78,11 +78,7 @@ buildscript {
             'dbAndroid': "co.touchlab.knarch:knarch-android:${versions.knarchDb}",
             'dbNative': "co.touchlab.knarch:knarch:${versions.knarchDb}",
         ],
-        'timber' : [
-            'common' : "com.jakewharton.timber:timber-common:${versions.timber}",
-            'ios'    : "com.jakewharton.timber:timberNative:${versions.timber}",
-            'android': "com.jakewharton.timber:timber-android:${versions.timber}"
-        ],
+        'timber' : "com.jakewharton.timber:timber:${versions.timber}",
         'androidx': [
             'appCompat': 'androidx.appcompat:appcompat:1.0.0',
             'recyclerView': 'androidx.recyclerview:recyclerview:1.0.0',

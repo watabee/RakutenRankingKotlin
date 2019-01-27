@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        TimberInitializer().initialize()
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.rootViewController = RankingViewController(api: appModule.api, repository: appModule.browsingHistoryRepository, coroutineDispatchers: appModule.coroutineDispatchers)

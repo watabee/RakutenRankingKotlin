@@ -12,7 +12,6 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import kotlinx.coroutines.Dispatchers
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
-import timber.log.info
 
 actual class AppModule(rakutenAppId: String, context: Context) {
 
@@ -24,7 +23,7 @@ actual class AppModule(rakutenAppId: String, context: Context) {
             addInterceptor(
                 HttpLoggingInterceptor(
                     HttpLoggingInterceptor.Logger { message ->
-                        Timber.tagged("OkHttp").info { message }
+                        Timber.tag("OkHttp").i(message)
                     }
                 ).apply {
                     level = HttpLoggingInterceptor.Level.BODY

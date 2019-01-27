@@ -19,6 +19,7 @@ dependencies {
     implementation deps.androidx.appCompat
     implementation deps.androidx.lifecycleExtension
     implementation deps.okhttp.logging
+    api deps.timber
 }
 
 kotlin {
@@ -36,7 +37,6 @@ kotlin {
                 implementation deps.knarch.db
                 implementation deps.sqldelight.runtime
                 implementation deps.sqldelight.multiplatformdriver
-                implementation deps.timber.common
             }
         }
 
@@ -51,7 +51,6 @@ kotlin {
                 implementation deps.knarch.dbAndroid
                 implementation deps.sqldelight.runtimeJdk
                 implementation deps.sqldelight.multiplatformdriverAndroid
-                implementation deps.timber.android
             }
         }
 
@@ -64,7 +63,6 @@ kotlin {
                 implementation deps.knarch.dbNative
                 implementation deps.sqldelight.runtimeNative
                 implementation deps.sqldelight.multiplatformdriverNative
-                implementation deps.timber.ios
             }
         }
     }

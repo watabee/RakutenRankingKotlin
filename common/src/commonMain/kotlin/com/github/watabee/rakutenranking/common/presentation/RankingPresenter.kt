@@ -7,8 +7,6 @@ import com.github.watabee.rakutenranking.common.data.RankingItem
 import com.github.watabee.rakutenranking.common.data.RankingItemMapper
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import timber.log.error
 
 class RankingPresenter(
     private val api: RakutenApi,
@@ -35,7 +33,6 @@ class RankingPresenter(
                 view.showRanking(api.findRanking().items.map { RankingItemMapper(it) })
                 loadBrowsingHistoriesIfNeeded()
             } catch (e: Exception) {
-                Timber.error(throwable = e, message = { "cause = ${e.cause}" })
                 if (e !is CancellationException) {
                     view.showError()
                 }
