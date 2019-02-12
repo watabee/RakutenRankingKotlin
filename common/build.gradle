@@ -34,9 +34,6 @@ kotlin {
                 implementation deps.kotlin.serialization.common
                 implementation deps.ktor.client.core
                 implementation deps.ktor.client.json.core
-                implementation deps.knarch.db
-                implementation deps.sqldelight.runtime
-                implementation deps.sqldelight.multiplatformdriver
             }
         }
 
@@ -48,9 +45,7 @@ kotlin {
                 implementation deps.kotlin.serialization.jdk
                 implementation deps.ktor.client.okhttp
                 implementation deps.ktor.client.json.jvm
-                implementation deps.knarch.dbAndroid
-                implementation deps.sqldelight.runtimeJdk
-                implementation deps.sqldelight.multiplatformdriverAndroid
+                implementation deps.sqldelight.driver.android
             }
         }
 
@@ -60,9 +55,7 @@ kotlin {
                 implementation deps.kotlin.serialization.native
                 implementation deps.ktor.client.ios
                 implementation deps.ktor.client.json.ios
-                implementation deps.knarch.dbNative
-                implementation deps.sqldelight.runtimeNative
-                implementation deps.sqldelight.multiplatformdriverNative
+                implementation deps.sqldelight.driver.ios
             }
         }
     }
@@ -98,8 +91,6 @@ sqldelight {
     packageName = "com.github.watabee.rakutenranking.db"
 }
 
-tasks.preBuild.dependsOn("generateSqlDelightInterface")
-
 task setupIos(type: Exec) {
     workingDir "${rootDir}/ios"
     commandLine "sh", "./scripts/setup.sh", propOrEnv("RAKUTEN_APP_ID")
@@ -122,7 +113,6 @@ project.afterEvaluate {
             final String linkTaskArm64 = frameworkArm64.linkTaskName
             final String linkTaskX64 = frameworkX64.linkTaskName
 
-            task.dependsOn generateSqlDelightInterface
             task.dependsOn linkTaskArm64
             task.dependsOn linkTaskX64
 
