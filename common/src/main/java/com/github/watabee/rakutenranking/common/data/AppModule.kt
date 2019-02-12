@@ -1,10 +1,12 @@
 package com.github.watabee.rakutenranking.common.data
 
 import android.content.Context
-import co.touchlab.multiplatform.architecture.db.sqlite.AndroidNativeOpenHelperFactory
 import com.github.watabee.rakutenranking.common.core.AppCoroutineDispatchers
 import com.github.watabee.rakutenranking.common.presentation.RankingPresenter
 import com.github.watabee.rakutenranking.common.presentation.RankingView
+import com.github.watabee.rakutenranking.db.Database
+import com.squareup.sqldelight.android.AndroidSqliteDriver
+import com.squareup.sqldelight.db.SqlDriver
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.features.json.JsonFeature
@@ -39,8 +41,11 @@ actual class AppModule(rakutenAppId: String, context: Context) {
 
     actual val api = RakutenApi(httpClient, rakutenAppId)
 
-    actual val browsingHistoryRepository =
-        BrowsingHistoryRepository(AndroidNativeOpenHelperFactory(context))
+    actual val driver: SqlDriver = AndroidSqliteDriver(Database.Schema, context, databaseName)
+
+    actual val database: Database = Database(driver)
+
+    actual val browsingHistoryRepository = BrowsingHistoryRepository(database)
 
     actual fun provideRankingPresenter(view: RankingView): RankingPresenter {
         return RankingPresenter(

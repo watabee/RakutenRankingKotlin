@@ -34,9 +34,6 @@ kotlin {
                 implementation deps.kotlin.serialization.common
                 implementation deps.ktor.client.core
                 implementation deps.ktor.client.json.core
-                implementation deps.knarch.db
-                implementation deps.sqldelight.runtime
-                implementation deps.sqldelight.multiplatformdriver
             }
         }
 
@@ -48,9 +45,7 @@ kotlin {
                 implementation deps.kotlin.serialization.jdk
                 implementation deps.ktor.client.okhttp
                 implementation deps.ktor.client.json.jvm
-                implementation deps.knarch.dbAndroid
-                implementation deps.sqldelight.runtimeJdk
-                implementation deps.sqldelight.multiplatformdriverAndroid
+                implementation deps.sqldelight.driver.android
             }
         }
 
@@ -60,9 +55,7 @@ kotlin {
                 implementation deps.kotlin.serialization.native
                 implementation deps.ktor.client.ios
                 implementation deps.ktor.client.json.ios
-                implementation deps.knarch.dbNative
-                implementation deps.sqldelight.runtimeNative
-                implementation deps.sqldelight.multiplatformdriverNative
+                implementation deps.sqldelight.driver.ios
             }
         }
     }
@@ -70,13 +63,15 @@ kotlin {
     targets {
         fromPreset(presets.android, 'android')
 
-        fromPreset(presets.iosArm64, 'iosArm64')
-        fromPreset(presets.iosX64, 'iosX64')
+        iosArm64("iosArm64")
+        iosX64("iosX64")
 
         configure([iosArm64, iosX64]) {
+            binaries {
+                framework()
+            }
             compilations.main {
                 source(sourceSets.iosMain)
-                outputKinds('FRAMEWORK')
                 extraOpts "-Xuse-experimental=kotlin.Experimental",
                     "-Xuse-experimental=kotlin.ExperimentalMultiplatform"
             }
@@ -96,8 +91,6 @@ sqldelight {
     packageName = "com.github.watabee.rakutenranking.db"
 }
 
-tasks.preBuild.dependsOn("generateSqlDelightInterface")
-
 task setupIos(type: Exec) {
     workingDir "${rootDir}/ios"
     commandLine "sh", "./scripts/setup.sh", propOrEnv("RAKUTEN_APP_ID")
@@ -115,33 +108,33 @@ project.afterEvaluate {
         final String binaryOutputPath = "${frameworkOutputPath}/${binaryName}"
 
         project.tasks.create("createIos${buildType}FatFramework") { task ->
-            final String linkTaskArm64 = kotlin.targets.iosArm64.compilations.main.linkTaskName("FRAMEWORK", buildType)
-            final String linkTaskX64 = kotlin.targets.iosX64.compilations.main.linkTaskName("FRAMEWORK", buildType)
+            def frameworkArm64 = kotlin.targets.iosArm64.compilations.main.target.binaries.findFramework("", buildType)
+            def frameworkX64 = kotlin.targets.iosX64.compilations.main.target.binaries.findFramework("", buildType)
+            final String linkTaskArm64 = frameworkArm64.linkTaskName
+            final String linkTaskX64 = frameworkX64.linkTaskName
 
-            task.dependsOn generateSqlDelightInterface
             task.dependsOn linkTaskArm64
             task.dependsOn linkTaskX64
 
             task.doLast {
-                final String outputArm64 = project.tasks.getByName(linkTaskArm64).outputFile.get().parentFile.absolutePath
-                final String outputX64 = project.tasks.getByName(linkTaskX64).outputFile.get().parentFile.absolutePath
+                final String outputArm64 = frameworkArm64.outputFile
+                final String outputX64 = frameworkX64.outputFile
 
                 exec { exec ->
                     new File(frameworkOutputPath).mkdirs()
 
                     def args = ["-create"]
 
-                    args.addAll(["-arch", "arm64", "${outputArm64}/${frameworkName}/${binaryName}"])
-                    args.addAll(["-arch", "x86_64", "${outputX64}/${frameworkName}/${binaryName}"])
+                    args.addAll(["-arch", "arm64", "${outputArm64}/${binaryName}"])
+                    args.addAll(["-arch", "x86_64", "${outputX64}/${binaryName}"])
                     args.addAll(["-output", "${binaryOutputPath}"])
 
                     exec.executable = "lipo"
                     exec.args = args
                 }
 
-                final String frameworkPathArm64 = "${outputArm64}/${frameworkName}"
                 copy { copy ->
-                    copy.from(frameworkPathArm64) { from ->
+                    copy.from(outputArm64) { from ->
                         from.exclude(binaryName)
                     }
                     copy.into(frameworkOutputPath)

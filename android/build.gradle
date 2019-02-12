@@ -76,9 +76,7 @@ dependencies {
     implementation deps.androidx.constraintLayout
     implementation deps.androidx.browser
 
-    implementation deps.knarch.dbAndroid
-    implementation deps.sqldelight.runtimeJdk
-    implementation deps.sqldelight.multiplatformdriverAndroid
+    implementation deps.sqldelight.driver.android
 
     implementation deps.groupie.core
     implementation deps.groupie.dataBinding
