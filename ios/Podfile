@@ -13,4 +13,6 @@ target 'RakutenRanking' do
   pod 'SnapKit', '~> 4.0.0'
   pod 'DifferenceKit/UIKitExtension'
   pod 'Nuke', '~> 7.0'
+
+  pod 'common', :path => '../common'
 end
