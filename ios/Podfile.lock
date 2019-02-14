@@ -9,7 +9,7 @@ PODS:
 
 DEPENDENCIES:
   - common (from `../common`)
-  - DifferenceKit/UIKitExtension
+  - DifferenceKit/UIKitExtension (~> 1.0.0)
   - Keys (from `Pods/CocoaPodsKeys`)
   - Nuke (~> 7.0)
   - SnapKit (~> 4.0.0)
@@ -27,12 +27,12 @@ EXTERNAL SOURCES:
     :path: Pods/CocoaPodsKeys
 
 SPEC CHECKSUMS:
-  common: 238df4d0ba0c5a3dc5ccc37e08b57ee4f72f8484
+  common: 0577332016497a73ebef9968285cc0924e58ca4b
   DifferenceKit: d501e37b866e98a8aaee0f61ceb02ad98e52b9c1
   Keys: a576f4c9c1c641ca913a959a9c62ed3f215a8de9
   Nuke: 0350d346a688426e8f2331253ef28dc2fc4f6178
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
 
-PODFILE CHECKSUM: b1181ef5ab45ce9e85bb262408c6d217ccdb825a
+PODFILE CHECKSUM: 084fcd3b99afa16b2d70cc2ebb38c7cf6d1168cb
 
 COCOAPODS: 1.6.0
