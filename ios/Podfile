@@ -11,7 +11,7 @@ target 'RakutenRanking' do
   use_frameworks!
 
   pod 'SnapKit', '~> 4.0.0'
-  pod 'DifferenceKit/UIKitExtension', '~> 1.0.0'
+  pod 'DifferenceKit/UIKitExtension', '1.0.0'
   pod 'Nuke', '~> 7.0'
 
   pod 'common', :path => '../common'
