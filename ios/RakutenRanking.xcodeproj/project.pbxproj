@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0292285C1CF7A75A66C3B7E3 /* Pods_RakutenRanking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C2916175496D949D3264E76 /* Pods_RakutenRanking.framework */; };
-		4524C755218BC57100E2B16B /* common.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4524C754218BC57000E2B16B /* common.framework */; };
-		4524C756218BC57100E2B16B /* common.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4524C754218BC57000E2B16B /* common.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		45582E2121985F5D001A0F5D /* RankingItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45582E2021985F5D001A0F5D /* RankingItemCell.xib */; };
 		45582E2321985F7B001A0F5D /* RankingItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45582E2221985F7B001A0F5D /* RankingItemCell.swift */; };
 		45582E2E21999A39001A0F5D /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45582E2D21999A39001A0F5D /* ReusableView.swift */; };
@@ -25,20 +23,6 @@
 		45D0582B2183F4F0008B23CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45D0582A2183F4F0008B23CE /* Assets.xcassets */; };
 		45D0582E2183F4F0008B23CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45D0582C2183F4F0008B23CE /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		4524C757218BC57100E2B16B /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				4524C756218BC57100E2B16B /* common.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2C2916175496D949D3264E76 /* Pods_RakutenRanking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RakutenRanking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,7 +52,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4524C755218BC57100E2B16B /* common.framework in Frameworks */,
 				0292285C1CF7A75A66C3B7E3 /* Pods_RakutenRanking.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,11 +157,9 @@
 			buildConfigurationList = 45D058322183F4F0008B23CE /* Build configuration list for PBXNativeTarget "RakutenRanking" */;
 			buildPhases = (
 				BC63ADE8A17CC86FB78B69BF /* [CP] Check Pods Manifest.lock */,
-				458BC3D22183FCFC001CE96B /* Build Kotlin Native */,
 				45D0581C2183F4EE008B23CE /* Sources */,
 				45D0581D2183F4EE008B23CE /* Frameworks */,
 				45D0581E2183F4EE008B23CE /* Resources */,
-				4524C757218BC57100E2B16B /* Embed Frameworks */,
 				6D2A4D0B68E041842DFD6E51 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -238,24 +219,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		458BC3D22183FCFC001CE96B /* Build Kotlin Native */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Build Kotlin Native";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd $SRCROOT/../\n# TODO: remove x86_64 architecture if publish app to the App Store\n./gradlew :common:createIosDebugFatFramework\n";
-		};
 		6D2A4D0B68E041842DFD6E51 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -264,11 +227,13 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-RakutenRanking/Pods-RakutenRanking-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-RakutenRanking/Pods-RakutenRanking-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/DifferenceKit/DifferenceKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Keys/Keys.framework",
 				"${BUILT_PRODUCTS_DIR}/Nuke/Nuke.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${PODS_ROOT}/../../common/build/common.framework",
+				"${PODS_ROOT}/../../common/build/common.framework.dSYM",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -278,10 +243,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Keys.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nuke.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/common.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/common.framework.dSYM",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RakutenRanking/Pods-RakutenRanking-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RakutenRanking/Pods-RakutenRanking-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BC63ADE8A17CC86FB78B69BF /* [CP] Check Pods Manifest.lock */ = {
