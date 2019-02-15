@@ -110,7 +110,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
         classpath "com.squareup.sqldelight:gradle-plugin:${versions.sqldelight}"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:3.17.0"
-        classpath 'com.alecstrong:cocoapods-gradle-plugin:0.3.0'
+        classpath 'com.alecstrong:cocoapods-gradle-plugin:0.3.1'
     }
 }
 
