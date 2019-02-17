@@ -12,7 +12,6 @@ pool:
 steps:
 - script: |
     gem install bundler
-    bundle install --retry=3 --jobs=4
   displayName: 'bundle install'
 
 - task: Gradle@2
