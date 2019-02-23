@@ -47,6 +47,11 @@ android {
         exclude 'META-INF/ktor-client-json.kotlin_module'
         exclude 'META-INF/ktor-client-core.kotlin_module'
     }
+
+    compileOptions {
+        targetCompatibility = "8"
+        sourceCompatibility = "8"
+    }
 }
 
 kotlin {

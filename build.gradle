@@ -28,7 +28,7 @@ buildscript {
         'androidx': [
             'lifecycle': '2.0.0'
         ],
-        'okhttp': '3.12.1',
+        'okhttp': '3.13.1',
         'groupie': '2.3.0',
         'glide': '4.8.0',
         'ktlint': '0.29.0',
