@@ -30,7 +30,7 @@ buildscript {
         ],
         'okhttp': '3.13.1',
         'groupie': '2.3.0',
-        'glide': '4.8.0',
+        'glide': '4.9.0',
         'ktlint': '0.29.0',
     ]
 
