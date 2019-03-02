@@ -1,16 +1,19 @@
+import dependencies.Deps
+import dependencies.BuildConfig
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlinx-serialization'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion buildConfig.compileSdk
+    compileSdkVersion BuildConfig.compileSdk
     defaultConfig {
         applicationId "com.github.watabee.rakutenranking"
-        minSdkVersion buildConfig.minSdk
-        targetSdkVersion buildConfig.targetSdk
-        versionCode buildConfig.version.code
-        versionName buildConfig.version.name
+        minSdkVersion BuildConfig.minSdk
+        targetSdkVersion BuildConfig.targetSdk
+        versionCode BuildConfig.versionCode
+        versionName BuildConfig.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -58,30 +61,30 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':common')
-    
-    implementation deps.kotlin.stdlib.jdk
-    implementation deps.kotlin.coroutines.jdk
-    implementation deps.kotlin.coroutines.android
 
-    implementation deps.androidx.appCompat
-    implementation deps.androidx.recyclerView
-    implementation deps.androidx.ktx
-    implementation deps.androidx.constraintLayout
-    implementation deps.androidx.browser
+    implementation Deps.Kotlin.Stdlib.jdk
+    implementation Deps.Kotlin.Coroutines.jdk
+    implementation Deps.Kotlin.Coroutines.android
 
-    implementation deps.sqldelight.driver.android
+    implementation Deps.AndroidX.appCompat
+    implementation Deps.AndroidX.recyclerView
+    implementation Deps.AndroidX.ktx
+    implementation Deps.AndroidX.constraintLayout
+    implementation Deps.AndroidX.browser
 
-    implementation deps.groupie.core
-    implementation deps.groupie.dataBinding
+    implementation Deps.SqlDelight.android
 
-    implementation deps.glide.core
-    kapt deps.glide.compiler
+    implementation Deps.Groupie.core
+    implementation Deps.Groupie.dataBinding
 
-    implementation deps.koin.core
-    implementation deps.koin.android
-    implementation(deps.koin.viewModel) {
+    implementation Deps.Glide.core
+    kapt Deps.Glide.compiler
+
+    implementation Deps.Koin.core
+    implementation Deps.Koin.android
+    implementation(Deps.Koin.viewModel) {
         exclude group: 'androidx.lifecycle'
     }
 
-    implementation deps.ktor.client.okhttp
+    implementation Deps.Ktor.Client.okhttp
 }
