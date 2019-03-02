@@ -1,102 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+import dependencies.Versions
 
 buildscript {
-    ext.buildConfig = [
-        'compileSdk': 28,
-        'minSdk': 21,
-        'targetSdk': 28,
-
-        'version': [
-            'major': 1,
-            'minor': 0,
-            'patch': 0,
-            'build': 0,
-        ],
-    ]
-    ext.buildConfig.version['name'] = "${buildConfig.version.major}.${buildConfig.version.minor}.${buildConfig.version.patch}"
-    ext.buildConfig.version['fullName'] = "${buildConfig.version.name}.${buildConfig.version.build}"
-    ext.buildConfig.version['code'] = buildConfig.version.major * 1000000 + buildConfig.version.minor * 10000 + buildConfig.version.patch * 100 + buildConfig.version.build
-
-    ext.versions = [
-        'kotlin': '1.3.21',
-        'kotlinCoroutines': '1.1.1',
-        'kotlinSerialization': '0.10.0',
-        'ktor': '1.1.3',
-        'sqldelight': '1.0.3',
-        'timber': '4.7.1',
-        'koin': '1.0.2',
-        'androidx': [
-            'lifecycle': '2.0.0'
-        ],
-        'okhttp': '3.13.1',
-        'groupie': '2.3.0',
-        'glide': '4.9.0',
-        'ktlint': '0.29.0',
-    ]
-
-    ext.deps = [
-        'kotlin': [
-            'stdlib': [
-                'common': "org.jetbrains.kotlin:kotlin-stdlib-common:${versions.kotlin}",
-                'jdk': "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
-            ],
-            'coroutines': [
-                'common': "org.jetbrains.kotlinx:kotlinx-coroutines-core-common:${versions.kotlinCoroutines}",
-                'jdk': "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}",
-                'android': "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}",
-                'native': "org.jetbrains.kotlinx:kotlinx-coroutines-core-native:${versions.kotlinCoroutines}",
-            ],
-            'serialization': [
-                'common': "org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:${versions.kotlinSerialization}",
-                'jdk': "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${versions.kotlinSerialization}",
-                'native': "org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:${versions.kotlinSerialization}",
-            ],
-        ],
-        'ktor': [
-            'client': [
-                'core': "io.ktor:ktor-client-core:${versions.ktor}",
-                'okhttp': "io.ktor:ktor-client-okhttp:${versions.ktor}",
-                'ios': "io.ktor:ktor-client-ios:${versions.ktor}",
-                'json': [
-                    'core': "io.ktor:ktor-client-json:${versions.ktor}",
-                    'jvm': "io.ktor:ktor-client-json-jvm:${versions.ktor}",
-                    'ios': "io.ktor:ktor-client-json-native:${versions.ktor}",
-                ],
-            ],
-        ],
-        'sqldelight': [
-            'driver': [
-                'android': "com.squareup.sqldelight:android-driver:${versions.sqldelight}",
-                'ios': "com.squareup.sqldelight:ios-driver:${versions.sqldelight}",
-            ]
-        ],
-        'timber' : "com.jakewharton.timber:timber:${versions.timber}",
-        'androidx': [
-            'appCompat': 'androidx.appcompat:appcompat:1.0.0',
-            'recyclerView': 'androidx.recyclerview:recyclerview:1.0.0',
-            'ktx': 'androidx.core:core-ktx:1.0.0',
-            'constraintLayout': 'androidx.constraintlayout:constraintlayout:1.1.3',
-            'lifecycleExtension': "androidx.lifecycle:lifecycle-extensions:${versions.androidx.lifecycle}",
-            'browser': "androidx.browser:browser:1.0.0",
-        ],
-        'koin': [
-            'core': "org.koin:koin-core:${versions.koin}",
-            'android': "org.koin:koin-android:${versions.koin}",
-            'viewModel': "org.koin:koin-androidx-viewmodel:${versions.koin}",
-        ],
-        'okhttp': [
-            'logging': "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
-        ],
-        'groupie': [
-            'core': "com.xwray:groupie:${versions.groupie}",
-            'dataBinding': "com.xwray:groupie-databinding:${versions.groupie}"
-        ],
-        'glide': [
-            'core': "com.github.bumptech.glide:glide:${versions.glide}",
-            'compiler': "com.github.bumptech.glide:compiler:${versions.glide}",
-        ],
-    ]
-
     repositories {
         google()
         mavenCentral()
@@ -106,9 +11,9 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        classpath "org.jetbrains.kotlin:kotlin-serialization:${versions.kotlin}"
-        classpath "com.squareup.sqldelight:gradle-plugin:${versions.sqldelight}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
+        classpath "com.squareup.sqldelight:gradle-plugin:${Versions.sqldelight}"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:3.17.0"
         classpath 'com.alecstrong:cocoapods-gradle-plugin:0.3.1'
     }
@@ -126,7 +31,7 @@ allprojects {
         resolutionStrategy {
             eachDependency { details ->
                 if (details.requested.group == 'com.squareup.okhttp3') {
-                    details.useVersion versions.okhttp
+                    details.useVersion Versions.okhttp
                 }
             }
         }
@@ -138,7 +43,7 @@ subprojects {
     spotless {
         kotlin {
             target "**/*.kt"
-            ktlint(versions.ktlint)
+            ktlint(Versions.ktlint)
         }
     }
 

@@ -1,3 +1,6 @@
+import dependencies.Deps
+import dependencies.BuildConfig
+
 apply plugin: 'kotlin-multiplatform'
 apply plugin: 'com.android.library'
 apply plugin: 'com.alecstrong.cocoapods'
@@ -5,10 +8,10 @@ apply plugin: 'kotlinx-serialization'
 apply plugin: 'com.squareup.sqldelight'
 
 android {
-    compileSdkVersion buildConfig.compileSdk
+    compileSdkVersion BuildConfig.compileSdk
 
     defaultConfig {
-        minSdkVersion buildConfig.minSdk
+        minSdkVersion BuildConfig.minSdk
     }
     
     dataBinding {
@@ -17,10 +20,10 @@ android {
 }
 
 dependencies {
-    implementation deps.androidx.appCompat
-    implementation deps.androidx.lifecycleExtension
-    implementation deps.okhttp.logging
-    api deps.timber
+    implementation Deps.AndroidX.appCompat
+    implementation Deps.AndroidX.lifecycleExtension
+    implementation Deps.OkHttp.logging
+    api Deps.timber
 }
 
 kotlin {
@@ -30,33 +33,33 @@ kotlin {
                 srcDirs 'build/sqldelight'
             }
             dependencies {
-                implementation deps.kotlin.stdlib.common
-                implementation deps.kotlin.coroutines.common
-                implementation deps.kotlin.serialization.common
-                implementation deps.ktor.client.core
-                implementation deps.ktor.client.json.core
+                implementation Deps.Kotlin.Stdlib.common
+                implementation Deps.Kotlin.Coroutines.common
+                implementation Deps.Kotlin.Serialization.common
+                implementation Deps.Ktor.Client.core
+                implementation Deps.Ktor.Client.Json.core
             }
         }
 
         androidMain {
             dependencies {
-                implementation deps.kotlin.stdlib.jdk
-                implementation deps.kotlin.coroutines.jdk
-                implementation deps.kotlin.coroutines.android
-                implementation deps.kotlin.serialization.jdk
-                implementation deps.ktor.client.okhttp
-                implementation deps.ktor.client.json.jvm
-                implementation deps.sqldelight.driver.android
+                implementation Deps.Kotlin.Stdlib.jdk
+                implementation Deps.Kotlin.Coroutines.jdk
+                implementation Deps.Kotlin.Coroutines.android
+                implementation Deps.Kotlin.Serialization.jdk
+                implementation Deps.Ktor.Client.okhttp
+                implementation Deps.Ktor.Client.Json.jvm
+                implementation Deps.SqlDelight.android
             }
         }
 
         iosMain {
             dependencies {
-                implementation deps.kotlin.coroutines.native
-                implementation deps.kotlin.serialization.native
-                implementation deps.ktor.client.ios
-                implementation deps.ktor.client.json.ios
-                implementation deps.sqldelight.driver.ios
+                implementation Deps.Kotlin.Coroutines.native
+                implementation Deps.Kotlin.Serialization.native
+                implementation Deps.Ktor.Client.ios
+                implementation Deps.Ktor.Client.Json.ios
+                implementation Deps.SqlDelight.ios
             }
         }
     }
@@ -90,7 +93,7 @@ task setupIos(type: Exec) {
 
 // Execute './gradlew :common:generatePodspec', then generate podspec file.
 cocoapods {
-    version = buildConfig.version.name
+    version = BuildConfig.versionName
     homepage = "https://github.com/watabee/RakutenRankingKotlin"
     deploymentTarget = "11.0"
     authors = "watabee"
