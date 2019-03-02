@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-multiplatform'
+apply plugin: 'kotlin-android'
 apply plugin: 'kotlinx-serialization'
 apply plugin: 'kotlin-kapt'
 
@@ -54,23 +54,11 @@ android {
     }
 }
 
-kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation project(':common')
-            }
-        }
-    }
-
-    targets {
-        fromPreset(presets.android, 'androidApp')
-    }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(':common')
+    
     implementation deps.kotlin.stdlib.jdk
     implementation deps.kotlin.coroutines.jdk
     implementation deps.kotlin.coroutines.android
