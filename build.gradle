@@ -65,8 +65,3 @@ subprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-Object propOrEnv(String propertyName) {
-    def propertyValue = project.properties[propertyName]
-    return propertyValue != null ? propertyValue : System.getenv(propertyName)
-}
