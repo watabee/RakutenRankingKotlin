@@ -16,3 +16,18 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.github.watabee.RakutenRanking
       SWIFT_VERSION: 4.2
       VALID_ARCHS: arm64
+schemes:
+  RakutenRanking:
+    build:
+      targets:
+        RakutenRanking: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+    profile:
+      config: Debug
+    analyze:
+      config: Debug
+    archive:
+      config: Debug
