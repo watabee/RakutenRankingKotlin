@@ -1,0 +1,18 @@
+name: RakutenRanking
+options:
+  minimumXcodeGenVersion: 2.2.0
+settings:
+  base:
+    IPHONEOS_DEPLOYMENT_TARGET: 11.0
+targets:
+  RakutenRanking:
+    platform: iOS
+    type: application
+    sources:
+      - RakutenRanking
+    settings:
+      ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: ${inherited}
+      INFOPLIST_FILE: RakutenRanking/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.github.watabee.RakutenRanking
+      SWIFT_VERSION: 4.2
+      VALID_ARCHS: arm64

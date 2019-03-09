@@ -10,9 +10,12 @@ It's the application key for [Rakuten Web Service](https://webservice.rakuten.co
 
 ### iOS
 
-Install [bundler](https://bundler.io/), if not installed.
+Install the latest version of the following libraries.
 
-Execute following commands.
+- [bundler](https://bundler.io/)
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+
+Run following command.
 
 ```
 $ ./gradlew :common:setupIos
