@@ -1,3 +1,5 @@
+source 'https://cdn.jsdelivr.net/cocoa/'
+
 platform :ios, '11.0'
 
 plugin 'cocoapods-keys', {
