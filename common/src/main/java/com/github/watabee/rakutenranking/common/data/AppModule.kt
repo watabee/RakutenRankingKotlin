@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 
-actual class AppModule(rakutenAppId: String, context: Context) {
+actual class AppModule(context: Context) {
 
     actual val coroutineDispatchers = AppCoroutineDispatchers(main = Dispatchers.Main)
 
@@ -39,7 +39,7 @@ actual class AppModule(rakutenAppId: String, context: Context) {
         }
     }
 
-    actual val api = RakutenApi(httpClient, rakutenAppId)
+    actual val api = RakutenApi(httpClient)
 
     actual val driver: SqlDriver = AndroidSqliteDriver(Database.Schema, context, databaseName)
 

@@ -21,8 +21,6 @@ configure<AppExtension> {
         versionName  = BuildConfig.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField("String", "RAKUTEN_APP_ID", "\"${project.getPropertyOrEnv("RAKUTEN_APP_ID")}\"")
     }
 
     dataBinding {

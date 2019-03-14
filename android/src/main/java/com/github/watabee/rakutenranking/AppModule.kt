@@ -9,7 +9,6 @@ val appModule = module {
 
     single {
         AppModule(
-            rakutenAppId = BuildConfig.RAKUTEN_APP_ID,
             context = androidContext()
         )
     }

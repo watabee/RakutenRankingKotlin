@@ -11,7 +11,7 @@ import io.ktor.client.engine.ios.Ios
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 
-actual class AppModule(rakutenAppId: String) {
+actual class AppModule {
 
     actual val coroutineDispatchers = AppCoroutineDispatchers(main = MainQueueDispatcher())
 
@@ -23,7 +23,7 @@ actual class AppModule(rakutenAppId: String) {
         }
     }
 
-    actual val api = RakutenApi(httpClient, rakutenAppId)
+    actual val api = RakutenApi(httpClient)
 
     actual val driver: SqlDriver = NativeSqliteDriver(Database.Schema, databaseName)
 

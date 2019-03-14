@@ -9,7 +9,6 @@
 import UIKit
 import SafariServices
 import common
-import Keys.RakutenRankingKeys
 import SnapKit
 import DifferenceKit
 
