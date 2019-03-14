@@ -1,5 +1,7 @@
 import com.alecstrong.cocoapods.gradle.plugin.CocoapodsExtension
 import com.android.build.gradle.LibraryExtension
+import com.codingfeline.buildkonfig.compiler.FieldSpec
+import com.codingfeline.buildkonfig.gradle.BuildKonfigExtension
 import com.squareup.sqldelight.gradle.SqlDelightExtension
 import dependencies.BuildConfig
 import dependencies.Deps
@@ -14,6 +16,7 @@ plugins {
     id("com.alecstrong.cocoapods")
     id("kotlinx-serialization")
     id("com.squareup.sqldelight")
+    id("com.codingfeline.buildkonfig")
 }
 
 configure<LibraryExtension> {
@@ -79,9 +82,12 @@ configure<KotlinMultiplatformExtension> {
         "ios",
         closureOf<KotlinNativeTarget> {
             compilations.getByName("main")
-                .extraOpts("-Xuse-experimental=kotlin.Experimental", "-Xuse-experimental=kotlin.ExperimentalMultiplatform")
+                .extraOpts(
+                    "-Xuse-experimental=kotlin.Experimental",
+                    "-Xuse-experimental=kotlin.ExperimentalMultiplatform"
+                )
 
-            compilations.forEach { 
+            compilations.forEach {
                 it.extraOpts("-linker-options", "-lsqlite3")
             }
         }
@@ -97,7 +103,7 @@ configure<SqlDelightExtension> {
 
 tasks.create("setupIos", type = Exec::class) {
     workingDir = file("${rootDir}/ios")
-    setCommandLine("sh", "./scripts/setup.sh", project.getPropertyOrEnv("RAKUTEN_APP_ID"))
+    setCommandLine("sh", "./scripts/setup.sh")
 }
 
 // Execute './gradlew :common:generatePodspec', then generate podspec file.
@@ -110,3 +116,45 @@ configure<CocoapodsExtension> {
     summary = "common"
     daemon = true
 }
+
+configure<BuildKonfigExtension> {
+    packageName = "com.github.watabee.rakutenranking"
+
+    defaultConfigs {
+        buildConfigField(
+            FieldSpec.Type.STRING,
+            "RAKUTEN_APP_ID",
+            "${project.getPropertyOrEnv("RAKUTEN_APP_ID")}"
+        )
+    }
+}
+
+// WORKAROUND --------
+val deleteTask = tasks.create("deleteBuildKonfigDir", Delete::class) {
+    delete(listOf("buildkonfig", "iosX64Main").fold(project.buildDir, ::File))
+}
+
+project.tasks.whenTaskAdded {
+    if (name == "generateBuildKonfig") {
+        finalizedBy(deleteTask)
+    }
+}
+
+project.afterEvaluate {
+    val mppExtension = extensions.getByType(KotlinMultiplatformExtension::class.java)
+    val targets = mppExtension.targets
+    val sourceSets = mppExtension.sourceSets
+
+    targets.filterIsInstance<KotlinNativeTarget>()
+        .filter { target -> target.name != "ios" }
+        .map { target -> sourceSets.getByName("${target.name}Main") }
+        .forEach { sourceSetMain ->
+
+            sourceSetMain.kotlin.setSrcDirs(
+                sourceSetMain.kotlin
+                    .srcDirs
+                    .filter { !it.absolutePath.contains("buildkonfig") }
+            )
+        }
+}
+// ----------------------

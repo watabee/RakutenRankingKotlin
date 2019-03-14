@@ -8,9 +8,8 @@
 
 import UIKit
 import common
-import Keys.RakutenRankingKeys
 
-let appModule = AppModule(rakutenAppId: RakutenRankingKeys().rakutenAppId)
+let appModule = AppModule()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
