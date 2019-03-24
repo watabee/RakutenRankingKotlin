@@ -22,10 +22,77 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        jcenter()
-        maven { url "https://kotlin.bintray.com/kotlinx" }
-        maven { url "https://dl.bintray.com/kotlin/ktor" }
+        maven {
+            url "https://maven.google.com"
+            content {
+                includeGroupByRegex "androidx.*"
+                includeGroupByRegex "com\\.android.*"
+            }
+        }
+        maven {
+            url "https://kotlin.bintray.com/kotlinx"
+            content {
+                includeGroup "org.jetbrains.kotlinx"
+            }
+        }
+        maven {
+            url "https://repo.maven.apache.org/maven2/"
+            content {
+                includeGroup "org.jetbrains"
+                includeGroup "org.jetbrains.kotlin"
+                includeGroup "org.jetbrains.intellij.deps"
+                includeGroup "co.touchlab"
+                includeGroup "com.github.bumptech.glide"
+                includeGroup "com.jakewharton.timber"
+                includeGroupByRegex "com\\.squareup.*"
+                includeGroup "org.slf4j"
+                includeGroup "com.typesafe"
+                includeGroup "org.sonatype.oss"
+                includeGroup "commons-io"
+                includeGroup "commons-codec"
+                includeGroup "commons-logging"
+                includeGroup "org.antlr"
+                includeGroup "com.googlecode.juniversalchardet"
+                includeGroup "com.googlecode.json-simple"
+                includeGroup "com.google.guava"
+                includeGroup "com.google.errorprone"
+                includeGroup "com.google.j2objc"
+                includeGroup "com.google.jimfs"
+                includeGroup "com.google.protobuf"
+                includeGroup "com.google.code.gson"
+                includeGroup "com.google.code.findbugs"
+                includeGroup "org.checkerframework"
+                includeGroup "javax.inject"
+                includeGroup "javax.xml.bind"
+                includeGroupByRegex "org\\.codehaus.*"
+                includeGroup "org.bouncycastle"
+                includeGroup "org.ow2.asm"
+                includeGroup "it.unimi.dsi"
+                includeGroup "net.sf.jopt-simple"
+                includeGroup "net.sf.kxml"
+                includeGroup "org.apache.commons"
+                includeGroup "org.apache.httpcomponents"
+                includeGroup "com.sun.activation"
+                includeGroup "org.glassfish.jaxb"
+                includeGroup "org.jvnet.staxex"
+                includeGroup "com.sun.xml.fastinfoset"
+                includeGroup "com.sun.istack"
+            }
+        }
+        maven {
+            url "http://jcenter.bintray.com/"
+            content {
+                includeGroup "org.jetbrains.trove4j"
+                includeGroup "com.xwray"
+                includeGroup "org.koin"
+            }
+        }
+        maven {
+            url "https://dl.bintray.com/kotlin/ktor"
+            content {
+                includeGroup "io.ktor"
+            }
+        }
     }
 
     configurations.all {
