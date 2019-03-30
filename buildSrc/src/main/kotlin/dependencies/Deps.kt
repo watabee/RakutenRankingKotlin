@@ -50,7 +50,7 @@ object Deps {
     object AndroidX {
         const val appCompat = "androidx.appcompat:appcompat:1.0.2"
         const val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
-        const val ktx = "androidx.core:core-ktx:1.0.0"
+        const val ktx = "androidx.core:core-ktx:1.0.1"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
         const val lifecycleExtension =
             "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
