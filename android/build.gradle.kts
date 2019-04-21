@@ -27,8 +27,16 @@ configure<AppExtension> {
         isEnabled = true
     }
 
+    val secretFile = file("$rootDir/secret.gradle")
+    if (secretFile.exists()) {
+        apply(from = secretFile.absolutePath, to = this)
+    }
+
     buildTypes {
         getByName("release") {
+            if (secretFile.exists()) {
+                signingConfig  = signingConfigs["release"]
+            }
             isMinifyEnabled = true
 
             val files = project.file("proguards")
