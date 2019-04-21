@@ -1,33 +1,40 @@
 PODS:
   - common (1.0.0)
-  - DifferenceKit/Core (1.0.0)
-  - DifferenceKit/UIKitExtension (1.0.0):
+  - DifferenceKit/Core (1.1.1)
+  - DifferenceKit/UIKitExtension (1.1.1):
     - DifferenceKit/Core
-  - Nuke (7.5.2)
-  - SnapKit (4.0.1)
+  - Nuke (7.6.1)
+  - SnapKit (4.2.0)
 
 DEPENDENCIES:
   - common (from `../common`)
-  - DifferenceKit/UIKitExtension (= 1.0.0)
-  - Nuke (~> 7.0)
-  - SnapKit (~> 4.0.0)
+  - DifferenceKit/UIKitExtension (~> 1.1.0)
+  - Nuke (~> 7.6.0)
+  - SnapKit (from `https://github.com/SnapKit/SnapKit.git`, branch `develop`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://cdn.jsdelivr.net/cocoa/:
     - DifferenceKit
     - Nuke
-    - SnapKit
 
 EXTERNAL SOURCES:
   common:
     :path: "../common"
+  SnapKit:
+    :branch: develop
+    :git: https://github.com/SnapKit/SnapKit.git
+
+CHECKOUT OPTIONS:
+  SnapKit:
+    :commit: eea05d74f073696202cd0bb8e744e4c89781a414
+    :git: https://github.com/SnapKit/SnapKit.git
 
 SPEC CHECKSUMS:
   common: 0577332016497a73ebef9968285cc0924e58ca4b
-  DifferenceKit: d501e37b866e98a8aaee0f61ceb02ad98e52b9c1
-  Nuke: 0350d346a688426e8f2331253ef28dc2fc4f6178
-  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+  DifferenceKit: cf1b84e2207ea45c3640381cb229cf46c1647466
+  Nuke: d0782693c570cb4f79e2a187859ef7f06f19365d
+  SnapKit: 8082a209d72683ebd4652cbbbcb235ef291a91ef
 
-PODFILE CHECKSUM: 2eb20b46ba2414c10be15e24f88ed12c09aa6c00
+PODFILE CHECKSUM: e161b3f6ac8bcf7cf01048a61af9e521a6dc3db4
 
 COCOAPODS: 1.7.0.beta.2

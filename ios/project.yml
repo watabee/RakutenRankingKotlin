@@ -14,7 +14,7 @@ targets:
       ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: ${inherited}
       INFOPLIST_FILE: RakutenRanking/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.github.watabee.RakutenRanking
-      SWIFT_VERSION: 4.2
+      SWIFT_VERSION: 5.0
       VALID_ARCHS: arm64
 schemes:
   RakutenRanking:
