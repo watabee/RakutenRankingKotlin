@@ -39,7 +39,7 @@ dependencies {
 
 configure<KotlinMultiplatformExtension> {
     sourceSets {
-        getByName("commonMain") {
+        val commonMain by getting {
             kotlin.srcDirs("build/sqldelight")
             
             dependencies {
@@ -51,7 +51,7 @@ configure<KotlinMultiplatformExtension> {
             }
         }
 
-        create("androidMain") {
+        val androidMain by creating {
             dependencies {
                 implementation(Deps.Kotlin.Stdlib.jdk)
                 implementation(Deps.Kotlin.Coroutines.jdk)
@@ -63,7 +63,7 @@ configure<KotlinMultiplatformExtension> {
             }
         }
 
-        create("iosMain") {
+        val iosMain by creating {
             dependencies {
                 implementation(Deps.Kotlin.Coroutines.native)
                 implementation(Deps.Kotlin.Serialization.native)
