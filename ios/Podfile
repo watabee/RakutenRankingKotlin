@@ -4,9 +4,9 @@ platform :ios, '11.0'
 
 target 'RakutenRanking' do
 
-  pod 'SnapKit', '~> 4.0.0'
-  pod 'DifferenceKit/UIKitExtension', '1.0.0'
-  pod 'Nuke', '~> 7.0'
+  pod 'SnapKit', :git => 'https://github.com/SnapKit/SnapKit.git', :branch => 'develop'
+  pod 'DifferenceKit/UIKitExtension', '~> 1.1.0'
+  pod 'Nuke', '~> 7.6.0'
 
   pod 'common', :path => '../common'
 end
