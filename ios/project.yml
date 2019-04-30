@@ -16,6 +16,7 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.github.watabee.RakutenRanking
       SWIFT_VERSION: 5.0
       VALID_ARCHS: arm64
+      OTHER_LDFLAGS: -lsqlite3 $(inherited)
 schemes:
   RakutenRanking:
     build:

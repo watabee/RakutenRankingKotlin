@@ -30,7 +30,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/SnapKit/SnapKit.git
 
 SPEC CHECKSUMS:
-  common: 0577332016497a73ebef9968285cc0924e58ca4b
+  common: 35ed81b057938e8273666aa547f9f7bbe4e42e4a
   DifferenceKit: cf1b84e2207ea45c3640381cb229cf46c1647466
   Nuke: d0782693c570cb4f79e2a187859ef7f06f19365d
   SnapKit: 8082a209d72683ebd4652cbbbcb235ef291a91ef
