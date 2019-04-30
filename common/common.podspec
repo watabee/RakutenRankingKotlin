@@ -1,30 +1,40 @@
-#
-# This file is generated via ./gradlew generatePodspec
-#
 Pod::Spec.new do |spec|
-  spec.name                     = 'common'
-  spec.version                  = '1.0.0'
-  spec.homepage                 = 'https://github.com/watabee/RakutenRankingKotlin'
-  spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
-  spec.ios.deployment_target    = '11.0'
-  spec.authors                  = 'watabee'
-  spec.license                  = ''
-  spec.summary                  = 'common'
-  spec.ios.vendored_frameworks  = "build/#{spec.name}.framework"
+    spec.name                     = 'common'
+    spec.version                  = '1.0.0'
+    spec.homepage                 = 'https://github.com/watabee/RakutenRankingKotlin'
+    spec.source                   = { :git => "Not Published", :tag => "Cocoapods/#{spec.name}/#{spec.version}" }
+    spec.authors                  = 'watabee'
+    spec.license                  = ''
+    spec.summary                  = 'common'
 
-  spec.prepare_command = <<-SCRIPT
-    set -ev
-    ../gradlew  -Pframework=#{spec.name}.framework initializeFramework --stacktrace
-  SCRIPT
+    spec.static_framework         = true
+    spec.vendored_frameworks      = "build/cocoapods/framework/#{spec.name}.framework"
+    spec.libraries                = "c++"
+    spec.module_name              = "#{spec.name}_umbrella"
 
-  spec.script_phases = [
-    {
-      :name => 'Build common',
-      :shell_path => '/bin/sh',
-      :script => <<-SCRIPT
-        set -ev
-        $PODS_TARGET_SRCROOT/../gradlew  -p "$PODS_TARGET_SRCROOT" "createIos${CONFIGURATION}Artifacts"
-      SCRIPT
+            
+
+    spec.pod_target_xcconfig = {
+        'KOTLIN_TARGET[sdk=iphonesimulator*]' => 'ios_x64',
+        'KOTLIN_TARGET[sdk=iphoneos*]' => 'ios_arm',
+        'KOTLIN_TARGET[sdk=macosx*]' => 'macos_x64'
     }
-  ]
+
+    spec.script_phases = [
+        {
+            :name => 'Build common',
+            :execution_position => :before_compile,
+            :shell_path => '/bin/sh',
+            :script => <<-SCRIPT
+                set -ev
+                REPO_ROOT="$PODS_TARGET_SRCROOT"
+                "$REPO_ROOT/../gradlew" -p "$REPO_ROOT" :common:syncFramework \
+                    -Pkotlin.native.cocoapods.target=$KOTLIN_TARGET \
+                    -Pkotlin.native.cocoapods.configuration=$CONFIGURATION \
+                    -Pkotlin.native.cocoapods.cflags="$OTHER_CFLAGS" \
+                    -Pkotlin.native.cocoapods.paths.headers="$HEADER_SEARCH_PATHS" \
+                    -Pkotlin.native.cocoapods.paths.frameworks="$FRAMEWORK_SEARCH_PATHS"
+            SCRIPT
+        }
+    ]
 end

@@ -1,19 +1,18 @@
-import com.alecstrong.cocoapods.gradle.plugin.CocoapodsExtension
 import com.android.build.gradle.LibraryExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec
 import com.codingfeline.buildkonfig.gradle.BuildKonfigExtension
-import com.squareup.sqldelight.gradle.SqlDelightExtension
+import com.squareup.sqldelight.gradle.SqlDelightDatabase
 import dependencies.BuildConfig
 import dependencies.Deps
 import dependencies.getPropertyOrEnv
-import groovy.lang.Closure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("kotlin-multiplatform")
     id("com.android.library")
-    id("com.alecstrong.cocoapods")
+    id("org.jetbrains.kotlin.native.cocoapods")
     id("kotlinx-serialization")
     id("com.squareup.sqldelight")
     id("com.codingfeline.buildkonfig")
@@ -29,6 +28,8 @@ configure<LibraryExtension> {
         isEnabled = true
     }
 }
+
+version = BuildConfig.versionName
 
 dependencies {
     implementation(Deps.AndroidX.appCompat)
@@ -72,49 +73,50 @@ configure<KotlinMultiplatformExtension> {
                 implementation(Deps.SqlDelight.ios)
             }
         }
+
+        val iosX64Main by creating {
+            dependencies {
+                dependsOn(iosMain)
+            }
+        }
     }
 
     android()
 
-    @Suppress("UNCHECKED_CAST")
-    (targetForCocoapods as Closure<Unit>).call(
-        listOf(presets.getByName("iosArm64"), presets.getByName("iosX64")),
-        "ios",
-        closureOf<KotlinNativeTarget> {
-            compilations.getByName("main")
-                .extraOpts(
-                    "-Xuse-experimental=kotlin.Experimental",
-                    "-Xuse-experimental=kotlin.ExperimentalMultiplatform"
-                )
+    iosArm64("ios")
+    iosX64("iosX64")
 
-            compilations.forEach {
-                it.extraOpts("-linker-options", "-lsqlite3")
-            }
-        }
+    // ./gradlew podspec
+    cocoapods {
+        authors = "watabee"
+        homepage = "https://github.com/watabee/RakutenRankingKotlin"
+        summary = "common"
+        license = ""
+    }
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.freeCompilerArgs = listOf(
+        "-Xuse-experimental=kotlin.Experimental",
+        "-Xuse-experimental=kotlin.ExperimentalMultiplatform"
     )
 }
 
 // workaround for https://youtrack.jetbrains.com/issue/KT-27170
 val compileClassPath by configurations.creating
 
-configure<SqlDelightExtension> {
-    packageName = "com.github.watabee.rakutenranking.db"
+// FIXME: https://github.com/square/sqldelight/issues/1274
+sqldelight {
+    methodMissing("Database", arrayOf(closureOf<SqlDelightDatabase> {
+        packageName = "com.github.watabee.rakutenranking.db"
+        sourceFolders = listOf("sqldelight")
+        schemaOutputDirectory = file("build/sqldelight")
+    }))
 }
 
 tasks.create("setupIos", type = Exec::class) {
     workingDir = file("${rootDir}/ios")
     setCommandLine("sh", "./scripts/setup.sh")
-}
-
-// Execute './gradlew :common:generatePodspec', then generate podspec file.
-configure<CocoapodsExtension> {
-    version = BuildConfig.versionName
-    homepage = "https://github.com/watabee/RakutenRankingKotlin"
-    deploymentTarget = "11.0"
-    authors = "watabee"
-    license = ""
-    summary = "common"
-    daemon = true
 }
 
 configure<BuildKonfigExtension> {
