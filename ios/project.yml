@@ -17,6 +17,7 @@ targets:
       SWIFT_VERSION: 5.0
       VALID_ARCHS: arm64
       OTHER_LDFLAGS: -lsqlite3 $(inherited)
+      CODE_SIGN_STYLE: Manual
 schemes:
   RakutenRanking:
     build:
